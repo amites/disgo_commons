@@ -1,8 +1,8 @@
 package types
 
 import (
-	"time"
-	"math/big"
+"time"
+"math/big"
 )
 
 // Transaction
