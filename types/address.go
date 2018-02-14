@@ -3,7 +3,7 @@ package types
 import (
 	"encoding/hex"
 	log "github.com/sirupsen/logrus"
-	"github.com/ethereum/go-ethereum/crypto/sha3"
+	"github.com/dispatchlabs/disgo_commons/crypto"
 )
 
 // Address
@@ -22,10 +22,10 @@ func NewAddress() (*Address, error) {
 	}
 
 	// Create address.
+	hash := crypto.Sum256(privateKey)
 	address := Address{}
-	publicKey := sha3.Sum256(privateKey)
-	for i := 0; i < AddressLength; i++ {
-		address[i] = publicKey[i+12]
+	for i := 0; i < HashLength; i++ {
+		address[i] = hash[i]
 	}
 
 	return &address, nil

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	
+
 	// Setup log.
 	formatter := &log.TextFormatter{
 		FullTimestamp: true,
