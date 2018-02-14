@@ -1,8 +1,7 @@
 package types
 
 import (
-"time"
-"math/big"
+	"time"
 )
 
 // Transaction
@@ -11,6 +10,6 @@ type Transaction struct {
 	Type  int
 	From  Address
 	To    Address
-	Value *big.Int
+	Value int64
 	Time  time.Time
 }
