@@ -17,7 +17,7 @@ func NewAddress() (*Address, error) {
 	if error != nil {
 		log.WithFields(log.Fields{
 			"method": "NewAddress",
-		}).Info("unable to create new address")
+		}).Info("unable to create new address", error)
 		return nil, error
 	}
 
