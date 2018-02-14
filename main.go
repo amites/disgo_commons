@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	
 	// Setup log.
 	formatter := &log.TextFormatter{
 		FullTimestamp: true,
@@ -16,10 +17,10 @@ func main() {
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.InfoLevel)
 
-	account, error := types.NewAccount()
+	address, error := types.NewAddress()
 	if error != nil {
 
 	}
 
-	log.Info(account)
+	log.Info(address)
 }
