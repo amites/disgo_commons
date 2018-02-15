@@ -24,8 +24,8 @@ func NewAddress() (*Address, error) {
 	// Create address.
 	hash := crypto.Sum256(privateKey)
 	address := Address{}
-	for i := 0; i < HashLength; i++ {
-		address[i] = hash[i]
+	for i := 0; i < AddressLength; i++ {
+		address[i] = hash[i+12]
 	}
 
 	return &address, nil
