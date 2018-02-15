@@ -9,6 +9,6 @@ import (
 type IService interface {
 	Name() string
 	IsRunning() bool
-	RegisterGrpc(listener *net.Listener)
+	Register(listener *net.Listener)
 	Go(waitGroup *sync.WaitGroup)
 }
