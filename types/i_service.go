@@ -1,14 +1,14 @@
 package types
 
 import (
-	"net"
 	"sync"
+	"google.golang.org/grpc"
 )
 
 // IService
 type IService interface {
 	Name() string
 	IsRunning() bool
-	Register(listener *net.Listener)
+	RegisterGrpc(grpcServer *grpc.Server)
 	Go(waitGroup *sync.WaitGroup)
 }
