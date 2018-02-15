@@ -7,6 +7,7 @@ import (
 
 // IService
 type IService interface {
+	Init()
 	Name() string
 	IsRunning() bool
 	RegisterGrpc(grpcServer *grpc.Server)
