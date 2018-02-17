@@ -1,8 +1,7 @@
 package types
 
 import (
-	"encoding/hex"
-	log "github.com/sirupsen/logrus"
+	"crypto/rand"
 	"github.com/dispatchlabs/disgo_commons/crypto"
 )
 
@@ -13,13 +12,8 @@ type Address [AddressLength] byte
 func NewAddress() (*Address, error) {
 
 	// TODO: How do we generate the private key?
-	privateKey, error := hex.DecodeString("b205a1e03ddf50247d8483435cd91f9c732bad281ad420061ab4310c33166276")
-	if error != nil {
-		log.WithFields(log.Fields{
-			"method": "NewAddress",
-		}).Info("unable to create new address", error)
-		return nil, error
-	}
+	privateKey := make([]byte, HashLength)
+	rand.Read(privateKey)
 
 	// Create address.
 	hash := crypto.Sum256(privateKey)
