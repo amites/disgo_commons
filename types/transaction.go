@@ -11,13 +11,13 @@ import (
 
 // Transaction
 type Transaction struct {
-	TxId  int64
-	Hash  [constants.HashLength]byte
-	Type  int
-	From  WalletAddress
-	To    WalletAddress
-	Value int64
-	Time  time.Time
+	TxId              int64
+	Hash              [constants.HashLength]byte
+	Type              int
+	From              WalletAddress
+	To                WalletAddress
+	Value             int64
+	Time              time.Time
 	CurrentValidators []WalletAddress
 }
 
@@ -54,8 +54,7 @@ func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
 	for i := 0; i < constants.AddressLength; i++ {
 		transaction.To[i] = to[i]
 	}
-	//transaction.Value = jsonMap["value"].(int64)
-
+	transaction.Value = int64(jsonMap["value"].(float64))
 	transaction.Time = time.Now()
 
 	return &transaction, error
@@ -63,5 +62,6 @@ func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
 
 // ToJson
 func (transaction *Transaction) ToJson() ([]byte, error) {
+	// TODO: Do this! MAO!
 	return json.Marshal(transaction)
 }
