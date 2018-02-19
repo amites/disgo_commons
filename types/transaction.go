@@ -18,6 +18,15 @@ type Transaction struct {
 	Time  time.Time
 }
 
+// NewTransaction
+func NewTransaction() (*Transaction) {
+
+	transaction := Transaction{}
+	transaction.Hash = crypto.CreateHash()
+
+	return &transaction
+}
+
 // NewTransactionFromJson
 func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
 
