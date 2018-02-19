@@ -20,10 +20,9 @@ type Transaction struct {
 
 // NewTransaction
 func NewTransaction() (*Transaction) {
-
 	transaction := Transaction{}
 	transaction.Hash = crypto.CreateHash()
-
+	transaction.Time = time.Now()
 	return &transaction
 }
 
@@ -53,6 +52,8 @@ func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
 		transaction.To[i] = to[i]
 	}
 	//transaction.Value = jsonMap["value"].(int64)
+
+	transaction.Time = time.Now()
 
 	return &transaction, error
 }
