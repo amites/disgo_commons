@@ -3,13 +3,13 @@ package types
 import (
 	"crypto/rand"
 	"github.com/dispatchlabs/disgo_commons/crypto"
+
 )
 
 // Address
-type Address [AddressLength] byte
+type WalletAddress [AddressLength] byte
 
-// NewAddress
-func NewAddress() (*Address, error) {
+func NewWalletAddress() (*WalletAddress, error) {
 
 	// TODO: How do we generate the private key?
 	privateKey := make([]byte, HashLength)
@@ -17,7 +17,7 @@ func NewAddress() (*Address, error) {
 
 	// Create address.
 	hash := crypto.Sum256(privateKey)
-	address := Address{}
+	address := WalletAddress{}
 	for i := 0; i < AddressLength; i++ {
 		address[i] = hash[i+12]
 	}

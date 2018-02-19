@@ -10,12 +10,14 @@ import (
 
 // Transaction
 type Transaction struct {
-	Hash  [HashLength] byte
+	TxId  int64
+	Hash  [HashLength]byte
 	Type  int
-	From  Address
-	To    Address
+	From  WalletAddress
+	To    WalletAddress
 	Value int64
 	Time  time.Time
+	CurrentValidators []WalletAddress
 }
 
 // NewTransactionFromJson
