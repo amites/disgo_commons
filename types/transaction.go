@@ -20,6 +20,14 @@ type Transaction struct {
 	CurrentValidators []WalletAddress
 }
 
+// NewTransaction
+func NewTransaction() (*Transaction) {
+	transaction := Transaction{}
+	transaction.Hash = crypto.CreateHash()
+	transaction.Time = time.Now()
+	return &transaction
+}
+
 // NewTransactionFromJson
 func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
 
@@ -46,6 +54,8 @@ func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
 		transaction.To[i] = to[i]
 	}
 	//transaction.Value = jsonMap["value"].(int64)
+
+	transaction.Time = time.Now()
 
 	return &transaction, error
 }
