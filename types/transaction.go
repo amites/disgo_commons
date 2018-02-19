@@ -31,7 +31,6 @@ func NewTransaction() (*Transaction) {
 
 // NewTransactionFromJson
 func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
-
 	var jsonMap map[string]interface{}
 	error := json.Unmarshal(bytes, &jsonMap);
 	if error != nil {
