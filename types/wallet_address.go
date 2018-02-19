@@ -10,6 +10,7 @@ import (
 // Address
 type WalletAddress [constants.AddressLength] byte
 
+// NewWalletAddress
 func NewWalletAddress() (*WalletAddress, error) {
 
 	// TODO: How do we generate the private key?

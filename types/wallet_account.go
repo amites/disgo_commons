@@ -1,6 +1,6 @@
 package types
 
-// Account
+// WalletAccount
 type WalletAccount struct {
 	Id           string
 	Address      WalletAddress
