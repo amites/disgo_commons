@@ -6,12 +6,13 @@ import (
 	"encoding/hex"
 
 	"github.com/dispatchlabs/disgo_commons/crypto"
+	"github.com/dispatchlabs/disgo_commons/constants"
 )
 
 // Transaction
 type Transaction struct {
 	TxId  int64
-	Hash  [HashLength]byte
+	Hash  [constants.HashLength]byte
 	Type  int
 	From  WalletAddress
 	To    WalletAddress
@@ -43,14 +44,14 @@ func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
 	if error != nil {
 		return nil, error
 	}
-	for i := 0; i < AddressLength; i++ {
+	for i := 0; i < constants.AddressLength; i++ {
 		transaction.From[i] = from[i]
 	}
 	to, error := hex.DecodeString(jsonMap["to"].(string))
 	if error != nil {
 		return nil, error
 	}
-	for i := 0; i < AddressLength; i++ {
+	for i := 0; i < constants.AddressLength; i++ {
 		transaction.To[i] = to[i]
 	}
 	//transaction.Value = jsonMap["value"].(int64)
