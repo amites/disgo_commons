@@ -6,32 +6,32 @@ import (
 	"strconv"
 	"sync"
 	"github.com/dispatchlabs/disgo/properties"
-	"google.golang.org/grpc"
 	"github.com/gorilla/mux"
 )
+
+var httpRouterInstance *mux.Router
+var httpRouterOnce sync.Once
+
+func GetHttpRouter() *mux.Router {
+	httpRouterOnce.Do(func() {
+		httpRouterInstance =  mux.NewRouter()
+	})
+	return httpRouterInstance
+}
 
 // HttpService
 type HttpService struct {
 	HostIp  string
 	Port    int
-	router  *mux.Router
 	running bool
 }
 
 // NewHttpService
-func NewHttpService(router *mux.Router) *HttpService {
+func NewHttpService() *HttpService {
 	return &HttpService{
 		properties.Properties.HttpHostIp,
 		properties.Properties.HttpPort,
-		router,
 		false}
-}
-
-// Init
-func (httpService *HttpService) Init() {
-	log.WithFields(log.Fields{
-		"method": "HttpService.Init",
-	}).Info("initializing...")
 }
 
 // Name
@@ -44,10 +44,6 @@ func (httpService *HttpService) IsRunning() bool {
 	return httpService.running
 }
 
-// RegisterGrpc
-func (httpService *HttpService) RegisterGrpc(grpcServer *grpc.Server) {
-}
-
 // Go
 func (httpService *HttpService) Go(waitGroup *sync.WaitGroup) {
 	httpService.running = true
@@ -55,7 +51,7 @@ func (httpService *HttpService) Go(waitGroup *sync.WaitGroup) {
 	log.WithFields(log.Fields{
 		"method": httpService.Name() + ".Go",
 	}).Info("listening on http://" + listen)
-	log.Fatal(http.ListenAndServe(listen, httpService.router))
+	log.Fatal(http.ListenAndServe(listen, GetHttpRouter()))
 }
 
 // setHeaders

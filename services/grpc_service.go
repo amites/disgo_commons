@@ -5,15 +5,21 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/dispatchlabs/disgo/party"
 	"github.com/dispatchlabs/disgo/properties"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
-var instance *grpc.Server
-var once sync.Once
+var grpcServerInstance *grpc.Server
+var grpcServerOnce sync.Once
+
+func GetGrpcServer() *grpc.Server {
+	grpcServerOnce.Do(func() {
+		grpcServerInstance = grpc.NewServer()
+	})
+	return grpcServerInstance
+}
 
 type GrpcService struct {
 	Port    int
@@ -39,34 +45,15 @@ func (grpcService *GrpcService) Go(waitGroup *sync.WaitGroup) {
 	if error != nil {
 		log.Fatalf("failed to listen: %v", error)
 	}
-	// Register disgoGrpc.
-	log.WithFields(log.Fields{
-		"method": grpcService.Name() + ".Go",
-	}).Info("registering Disgover...")
-	party.RegisterPartyServer(GetCGrpcServer(), party.NewParty())
-
-	// Register Disgover.
-	log.WithFields(log.Fields{
-		"method": grpcService.Name() + ".Go",
-	}).Info("registering Disgover...")
-	//disgover.RegisterDisgoverRPCServer(GetCGrpcServer(), disgover.GetInstance())
 
 	// Serve.
-	reflection.Register(GetCGrpcServer())
 	log.WithFields(log.Fields{
 		"method": grpcService.Name() + ".Go",
 	}).Info("listening on " + strconv.Itoa(grpcService.Port))
-	if error := GetCGrpcServer().Serve(listener); error != nil {
+	reflection.Register(GetGrpcServer())
+	if error := GetGrpcServer().Serve(listener); error != nil {
 		log.Fatalf("failed to serve: %v", error)
 		grpcService.running = false
 	}
-}
-
-
-func GetCGrpcServer() *grpc.Server {
-	once.Do(func() {
-		instance = grpc.NewServer()
-	})
-	return instance
 }
 
