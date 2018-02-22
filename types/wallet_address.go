@@ -26,3 +26,19 @@ func NewWalletAddress() (*WalletAddress, error) {
 
 	return &address, nil
 }
+
+func GetAddressFromBytes(bytes []byte) (*WalletAddress) {
+	addr := WalletAddress{}
+	for i, val := range bytes {
+		addr[i] = val
+	}
+	return &addr
+}
+
+func GetBytesFromAddress(wa *WalletAddress) (*[]byte) {
+	byteArray := make([]byte, constants.AddressLength)
+	for i, val := range wa {
+		byteArray[i] = val
+	}
+	return &byteArray
+}
