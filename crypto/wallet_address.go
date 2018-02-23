@@ -1,9 +1,9 @@
 package crypto
 
 import (
-	"github.com/dispatchlabs/disgo_commons/constants"
-	"math/rand"
-	"encoding/hex"
+"github.com/dispatchlabs/disgo_commons/constants"
+"math/rand"
+"encoding/hex"
 )
 
 // NewWalletAddress
