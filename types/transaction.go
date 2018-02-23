@@ -11,56 +11,103 @@ import (
 
 // Transaction
 type Transaction struct {
-	TxId              int64
+	Id                int64
 	Hash              [constants.HashLength]byte
 	Type              int
-	From              WalletAddress
-	To                WalletAddress
+	From              [constants.AddressLength]byte
+	To                [constants.AddressLength]byte
 	Value             int64
 	Time              time.Time
-	CurrentValidators []WalletAddress
+	CurrentValidators [][constants.AddressLength]byte
 }
 
 // NewTransaction
 func NewTransaction() (*Transaction) {
 	transaction := Transaction{}
-	transaction.Hash = crypto.CreateHash()
+	transaction.Hash = crypto.NewHash()
 	transaction.Time = time.Now()
 	return &transaction
 }
 
-// NewTransactionFromJson
-func NewTransactionFromJson(bytes []byte) (*Transaction, error) {
+// UnmarshalJSON
+func (this *Transaction) UnmarshalJSON(bytes []byte) error {
 	var jsonMap map[string]interface{}
-	error := json.Unmarshal(bytes, &jsonMap);
+	error := json.Unmarshal(bytes, &jsonMap)
 	if error != nil {
-		return nil, error
+		return error
 	}
 
-	transaction := Transaction{}
-	transaction.Hash = crypto.CreateHash()
-	from, error := hex.DecodeString(jsonMap["from"].(string))
-	if error != nil {
-		return nil, error
+	if jsonMap["id"] != nil {
+		this.Id = int64(jsonMap["id"].(float64))
 	}
-	for i := 0; i < constants.AddressLength; i++ {
-		transaction.From[i] = from[i]
+	if jsonMap["hash"] != nil {
+		hash, error := hex.DecodeString(jsonMap["hash"].(string))
+		if error != nil {
+			return error
+		}
+		copy(this.Hash[:], hash)
 	}
-	to, error := hex.DecodeString(jsonMap["to"].(string))
-	if error != nil {
-		return nil, error
+	if jsonMap["type"] != nil {
+		this.Type = int(jsonMap["type"].(float64))
 	}
-	for i := 0; i < constants.AddressLength; i++ {
-		transaction.To[i] = to[i]
+	if jsonMap["from"] != nil {
+		from, error := hex.DecodeString(jsonMap["from"].(string))
+		if error != nil {
+			return error
+		}
+		copy(this.From[:], from)
 	}
-	transaction.Value = int64(jsonMap["value"].(float64))
-	transaction.Time = time.Now()
+	if jsonMap["to"] != nil {
+		to, error := hex.DecodeString(jsonMap["to"].(string))
+		if error != nil {
+			return error
+		}
+		copy(this.To[:], to)
+	}
+	if jsonMap["value"] != nil {
+		this.Id = int64(jsonMap["value"].(float64))
+	}
+	if jsonMap["time"] != nil {
+		// TODO: How do we do this?
+		//this.Time = jsonMap["value"]
+	}
 
-	return &transaction, error
+	return nil
 }
 
-// ToJson
-func (transaction *Transaction) ToJson() ([]byte, error) {
-	// TODO: Do this! MAO!
-	return json.Marshal(transaction)
+// MarshalJSON
+func (this Transaction) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Id    int64     `json:"id,omitempty"`
+		Hash  string    `json:"hash,omitempty"`
+		Type  int       `json:"type,omitempty"`
+		From  []byte    `json:"from,omitempty"`
+		To    []byte    `json:"to,omitempty"`
+		Value int64     `json:"value,omitempty"`
+		Time  time.Time `json:"time,omitempty"`
+	}{
+		Id:    this.Id,
+		Hash:  hex.EncodeToString(this.Hash[:]),
+		Type:  this.Type,
+		From:  this.From[:],
+		To:    this.To[:],
+		Value: this.Value,
+		Time:  this.Time,
+	})
 }
+
+// HashString
+func (this Transaction) HashString() string {
+	return crypto.ToHashString(this.Hash)
+}
+
+// FromString
+func (this Transaction) FromString() string {
+	return crypto.ToWalletAddressString(this.From)
+}
+
+// ToString
+func (this Transaction) ToString() string {
+	return crypto.ToWalletAddressString(this.To)
+}
+

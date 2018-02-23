@@ -1,9 +1,13 @@
 package types
 
+import (
+	"github.com/dispatchlabs/disgo_commons/constants"
+)
+
 // WalletAccount
 type WalletAccount struct {
-	Id           string
-	Address      WalletAddress
-	Name         string
-	Balance      int64
+	Id      string
+	Address [constants.AddressLength]byte
+	Name    string
+	Balance int64
 }
