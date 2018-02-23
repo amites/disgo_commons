@@ -81,16 +81,16 @@ func (this Transaction) MarshalJSON() ([]byte, error) {
 		Id    int64     `json:"id,omitempty"`
 		Hash  string    `json:"hash,omitempty"`
 		Type  int       `json:"type,omitempty"`
-		From  []byte    `json:"from,omitempty"`
-		To    []byte    `json:"to,omitempty"`
+		From  string    `json:"from,omitempty"`
+		To    string    `json:"to,omitempty"`
 		Value int64     `json:"value,omitempty"`
 		Time  time.Time `json:"time,omitempty"`
 	}{
 		Id:    this.Id,
 		Hash:  hex.EncodeToString(this.Hash[:]),
 		Type:  this.Type,
-		From:  this.From[:],
-		To:    this.To[:],
+		From:  hex.EncodeToString(this.From[:]),
+		To:    hex.EncodeToString(this.To[:]),
 		Value: this.Value,
 		Time:  this.Time,
 	})
@@ -111,3 +111,11 @@ func (this Transaction) ToString() string {
 	return crypto.ToWalletAddressString(this.To)
 }
 
+// String
+func (this Transaction) String() string {
+	bytes, error := json.Marshal(this)
+	if error != nil {
+		return error.Error()
+	}
+	return string(bytes)
+}
