@@ -65,7 +65,7 @@ func (this *Transaction) UnmarshalJSON(bytes []byte) error {
 		copy(this.To[:], to)
 	}
 	if jsonMap["value"] != nil {
-		this.Id = int64(jsonMap["value"].(float64))
+		this.Value= int64(jsonMap["value"].(float64))
 	}
 	if jsonMap["time"] != nil {
 		// TODO: How do we do this?
