@@ -15,6 +15,15 @@ type WalletAccount struct {
 	Balance int64
 }
 
+// NewWalletAccount
+func NewWalletAccount() *WalletAccount {
+	walletAccount := &WalletAccount{}
+	walletAccount.Id = "ID"
+	walletAccount.Address, _ = crypto.NewWalletAddress()
+	walletAccount.Balance = 0
+	return walletAccount
+}
+
 // UnmarshalJSON
 func (this *WalletAccount) UnmarshalJSON(bytes []byte) error {
 	var jsonMap map[string]interface{}
@@ -46,10 +55,10 @@ func (this *WalletAccount) UnmarshalJSON(bytes []byte) error {
 // MarshalJSON
 func (this WalletAccount) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
-		Id      string `json:"id,omitempty"`
-		Address string `json:"address,omitempty"`
+		Id      string `json:"id"`
+		Address string `json:"address"`
 		Name    string `json:"name,omitempty"`
-		Balance int64  `json:"balance,omitempty"`
+		Balance int64  `json:"balance"`
 	}{
 		Id:      this.Id,
 		Address: hex.EncodeToString(this.Address[:]),
