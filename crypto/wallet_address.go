@@ -34,3 +34,14 @@ func ToWalletAddress(bytes []byte) [constants.AddressLength]byte {
 func ToWalletAddressString(address [constants.AddressLength]byte) string {
 	return hex.EncodeToString(address[:])
 }
+
+func AddressStringToBytes(address string) ([]byte, error) {
+	result, err := hex.DecodeString(address)
+	return result, err
+}
+
+func ToWalletAddressBytes(address [constants.AddressLength]byte) []byte {
+	byteArray := make([]byte, constants.AddressLength)
+	copy(byteArray, address[:])
+	return byteArray
+}
