@@ -75,6 +75,19 @@ func GetWalletAddress() (string, error) {
 	return result, nil
 }
 
+func GetWalletAddressBytes() [constants.AddressLength]byte {
+	strValue, err := GetWalletAddress()
+	if err != nil {
+		log.Fatal("Cannot get wallet", err)
+	}
+	regBytes, err := AddressStringToBytes(strValue)
+	if err != nil {
+		log.Fatal("Cannot get wallet", err)
+	}
+
+	return ToWalletAddress(regBytes)
+}
+
 // ToWalletAddress
 func ToWalletAddress(bytes []byte) [constants.AddressLength]byte {
 	address := [constants.AddressLength]byte{}
