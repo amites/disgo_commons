@@ -20,13 +20,6 @@ type TransactionPayload struct {
 	CurrentValidators [][constants.AddressLength]byte
 }
 
-// TransactionPayload
-func NewTransactionPayload() (*TransactionPayload) {
-	transaction := TransactionPayload{}
-	transaction.Time = time.Now()
-	return &transaction
-}
-
 // FromString
 func (this TransactionPayload) FromString() string {
 	return crypto.ToWalletAddressString(this.From)

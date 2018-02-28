@@ -5,13 +5,26 @@ import (
 	"github.com/dispatchlabs/disgo_commons/crypto"
 	"encoding/json"
 	"encoding/hex"
+	"encoding/binary"
+	"bytes"
 )
+
+// NewTransaction
+func NewTransaction(privateKey []byte, payload *TransactionPayload) *Transaction {
+	transaction := &Transaction{}
+	var buffer bytes.Buffer
+	binary.Write(&buffer, binary.BigEndian, transaction)
+	transaction.Hash = crypto.NewHash(buffer.Bytes())
+	transaction.Payload = payload
+	copy(transaction.Signature[:], crypto.Sign(transaction.Hash, privateKey))
+	return transaction
+}
 
 // Transaction
 type Transaction struct {
 	Hash      [constants.HashLength]byte
 	Payload   *TransactionPayload
-	Signature [65] byte
+	Signature [constants.SignatureLength] byte
 }
 
 // HashString

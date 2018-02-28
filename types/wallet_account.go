@@ -24,6 +24,21 @@ func NewWalletAccount() *WalletAccount {
 	return walletAccount
 }
 
+// ToAddressString
+func (this WalletAccount) ToAddressString() string {
+	return crypto.ToWalletAddressString(this.Address)
+}
+
+// String
+func (this WalletAccount) String() string {
+	bytes, error := json.Marshal(this)
+	if error != nil {
+		return error.Error()
+	}
+	return string(bytes)
+}
+
+
 // UnmarshalJSON
 func (this *WalletAccount) UnmarshalJSON(bytes []byte) error {
 	var jsonMap map[string]interface{}
@@ -65,18 +80,4 @@ func (this WalletAccount) MarshalJSON() ([]byte, error) {
 		Name:    this.Name,
 		Balance: this.Balance,
 	})
-}
-
-// ToAddressString
-func (this WalletAccount) ToAddressString() string {
-	return crypto.ToWalletAddressString(this.Address)
-}
-
-// String
-func (this WalletAccount) String() string {
-	bytes, error := json.Marshal(this)
-	if error != nil {
-		return error.Error()
-	}
-	return string(bytes)
 }
