@@ -1,19 +1,11 @@
 package crypto
 
 import (
-"github.com/ebfe/keccak"
+
 "crypto/rand"
 "github.com/dispatchlabs/disgo_commons/constants"
 "encoding/hex"
 )
-
-// Sum256
-func Sum256(data []byte) (digest [constants.HashLength]byte) {
-	hash := keccak.NewSHA3256()
-	hash.Write(data)
-	hash.Sum(digest[:0])
-	return
-}
 
 // NewHash
 func NewHash() [constants.HashLength] byte {

@@ -1,0 +1,23 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+.editorconfig
+/dist
+/logs
+/tmp
+*/.svn/*
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+
+# misc
+*/.libs/*
+
+
+#System Files
+.DS_Store
+Thumbs.db

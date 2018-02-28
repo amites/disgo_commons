@@ -3,23 +3,18 @@ package crypto
 import (
 	"github.com/dispatchlabs/disgo_commons/constants"
 	"encoding/hex"
-
-	"math/rand"
 )
 
 // NewWalletAddress
 func NewWalletAddress() ([constants.AddressLength]byte, error) {
 
-	//publicKey, privateKey := secp256k1.GenerateKeyPair()
-	// TODO: How do we generate the private key?
-	privateKey := make([]byte, constants.HashLength)
-	rand.Read(privateKey)
+	publicKey, _ := GenerateKeyPair()
 
 	// Create address.
-	publicKey := Sum256(privateKey)
+	hash := Sum256(publicKey[1:])
 	address := [constants.AddressLength]byte{}
 	for i := 0; i < constants.AddressLength; i++ {
-		address[i] = publicKey[i+12]
+		address[i] = hash[i+12]
 	}
 
 	return address, nil
