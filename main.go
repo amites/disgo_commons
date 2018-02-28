@@ -3,7 +3,8 @@ package main
 import (
 	log "github.com/sirupsen/logrus"
 	"os"
-	"github.com/dispatchlabs/disgo_commons/types"
+	"github.com/dispatchlabs/disgo_commons/crypto"
+	"fmt"
 )
 
 func main() {
@@ -17,10 +18,12 @@ func main() {
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.InfoLevel)
 
-	address, error := types.NewAddress()
-	if error != nil {
-
+	address, err := crypto.GetWalletAddress()
+	if err != nil {
+		fmt.Println(err.Error())
+		//raw = NewWalletAddress()
 	}
+
 
 	log.Info(address)
 }
