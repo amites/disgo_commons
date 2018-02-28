@@ -27,16 +27,16 @@ func GenerateKeyPair() (publicKey, privateKey []byte) {
 }
 
 // ToPublicKey
-func ToPublicKey(hash [constants.HashLength]byte, signature []byte) []byte {
-	publicKey, error := secp256k1.RecoverPubkey(hash[:], signature)
+func ToPublicKey(hash [constants.HashLength]byte, signature [constants.SignatureLength]byte) []byte {
+	publicKey, error := secp256k1.RecoverPubkey(hash[:], signature[:])
 	if error != nil {
 		panic(error)
 	}
 	return publicKey
 }
 
-// Sign
-func Sign(hash [constants.HashLength]byte, privateKey []byte) []byte {
+// NewSignature
+func NewSignature(privateKey []byte, hash [constants.HashLength]byte) []byte {
 	signature, error := secp256k1.Sign(hash[:], privateKey[:])
 	if error != nil {
 		panic(error)
@@ -45,8 +45,8 @@ func Sign(hash [constants.HashLength]byte, privateKey []byte) []byte {
 }
 
 // VerifySignature
-func VerifySignature(hash [constants.HashLength]byte, signature []byte) bool {
-	return secp256k1.VerifySignature(ToPublicKey(hash, signature), hash[:], signature)
+func VerifySignature(hash [constants.HashLength]byte, signature [constants.SignatureLength]byte) bool {
+	return secp256k1.VerifySignature(ToPublicKey(hash, signature), hash[:], signature[:constants.SignatureLength-1])
 }
 
 /*
